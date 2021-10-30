@@ -10,20 +10,13 @@ import os
 from pyowm import *
 from time import *
 from random import randint
+from jokeapi import Jokes # Import the Jokes class
+import asyncio
 from math import *
 import rivescript as rs
 __author__ = ["Prabhakar Dev"]
 input_text = input
 print('importing modules..')
-#from intent import *
-#from prompt_toolkit.shortcuts import input_dialog,message_dialog as pop
-#from wx import App,GetTextFromUser
-#input=lambda x:input_dialog("mech'a",x).run()
-# input=GetTextFromUser
-#from ui import pop
-#from blog.settings import BASE_DIR
-#from dotenv import load_dotenv
-#from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 try:
     # import recog                         #comment this line for text input
     input = recog.predict
@@ -58,10 +51,17 @@ def s_print(strings, extras=[]):
     #speak(concat(strings).replace('\n','. '))
     # pop(concat(strings+extras).replace("\n","."))
 
+async def print_joke():
+        j = await Jokes()
+        joke = await j.get_joke(blacklist=['nsfw','racist','religious','political','explicit'])
+        if joke["type"] == "single":
+            return s_print([joke["joke"]])
+        else:
+            return s_print([joke["setup"],joke["delivery"]])
 
 def search3(topic):
     try:
-        return s_print(['###Here are links:- '], ['\n'.join(map(lambda x: "- ["+x+"]("+x+")", sch(topic, stop=5)))])
+        return s_print(['###Here are links:- '], [*list(map(lambda x: "- ["+x+"]("+x+")", sch(topic, stop=5)))])
     except (ConnectionError, URLError):
         return s_print(['#Unable to Connect'])
     except RuntimeError:
@@ -101,7 +101,8 @@ inp = ''
 s_print(['Hello, Human!'])
 
 
-def reply(inp, stdscr=None):
+def reply(inp, stdscr=None, label=None):
+    print(label)
     inp = inp.replace('don\'t', 'do not').replace('can\'t', 'cannot').replace(
         '\'ld', ' would').replace('\'ll', 'will').replace('dont', 'do not').replace('cant', 'cannot')
     if 'calculate' in inp.lower():
@@ -112,8 +113,9 @@ def reply(inp, stdscr=None):
     if 'flip a coin' in inp.lower():
         ht = ['heads', 'tails']
         if 'times' in inp.lower():
-            heads = 34
-            return s_print(['the results are:\n', h, ' heads and ', t, ' tails'], ['\nComplete results are ']+c)
+            n = int(inp[inp.index('n')+1:inp.index('t')].strip())
+            h = randint(1, n)
+            return s_print(['the results are:', h, ' heads and ', n-h, ' tails'])
         else:
             return s_print(['It is a '+ht[randint(0, 1)]])
     elif 'what is the weather' in inp.lower():
@@ -125,6 +127,11 @@ def reply(inp, stdscr=None):
         except ConnectionError as e:
             print(e.args)
             return s_print(['NO CONNECTION.\nI cant check the weather without a connection'])
+    elif 'tell me a joke' in inp.lower().strip():
+        if label is not None:
+            label.setText('<h2>Getting jokes</h2>')
+            label.repaint()
+        return asyncio.run(print_joke())
     elif 'search' in inp.lower() or 'google' in inp.lower():
         if stdscr is not None:
             for i in range(20):
@@ -132,6 +139,9 @@ def reply(inp, stdscr=None):
                 stdscr.clrtoeol()
             stdscr.addstr(0, 0, "getting the results")
             stdscr.refresh()
+        if label is not None:
+            label.setText("<h1>getting the results</h1>")
+            label.repaint()
         if 'search' in inp.lower():
             if 'for' in inp.lower():
                 t = inp[inp.index('r', inp.index('f'))+1:len(inp)]
@@ -159,6 +169,9 @@ def reply(inp, stdscr=None):
     else:
         out = x.reply('user', inp.lower())
         if out == 'code 404':
+            if label is not None:
+                label.setText("<h2>I didnt understand what you said, so i am searching it...</h2>")
+                label.repaint()
             return search3(inp)
         else:
-            return s_print([out])
+            return s_print([*out.split('\n')])

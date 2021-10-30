@@ -9,12 +9,14 @@ def setup_reply_function(input_box: qtw.QLineEdit, label: qtw.QLabel):
     def reply_function():
         text = input_box.text()
         input_box.setText("")
-        res = reply(text)
+        res = reply(text, label=label)
         if type(res) == tuple:
             os.system("curl -L -o test.jpg "+res[1])
             label.setText('<img src="file:///home/prabhakar/assistant/test.jpg" style="width:20px;"/><br/>'+md(res[0]).replace('\n',"<br/>"))
+            input_box.setFocus()
             return
         label.setText(md(res).replace('\n',"<br/>"))
+        input_box.setFocus()
     return reply_function
 
 if __name__ == '__main__':
