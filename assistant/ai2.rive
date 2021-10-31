@@ -15,20 +15,20 @@
 
 // Bot Variables
 
-! var name     = Balak
-! var fullname = BALAK
-! var age      = 0b1110
+! var name     = WhITeN
+! var fullname = Whats In The Name
+! var age      = 0b10010
 ! var birthday = Oct12
 
 ! var sex      = male
 
-! var location = Jharkhand
+! var location = India
 
 ! var city     = Ranchi
 ! var eyes     = red
-! var hair     = light brown
+! var hair     = I dont have any hair, but my wires are colourful
 
-! var hairlen  = 23m
+! var hairlen  = I dint have hairs, tho my wires are long and strong
 
 ! var color    = blue
 
@@ -37,7 +37,7 @@
 
 ! var author   = Stephen William Hawking
 
-! var job      = robot
+! var job      = chatbot
 
 ! var website  = pbkdev.pythonaywhere.com
 
@@ -219,6 +219,8 @@
 
 ! sub youre     = you are
 
+! sub you're    = you are
+
 ! sub didnt     = did not
 
 ! sub ain't     = is not
@@ -384,6 +386,7 @@
 ^  [888881766](tel:888881766)
 
 + i want to die
+
 @i want to commit suicide
 
 + i am bored

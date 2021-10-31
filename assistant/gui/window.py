@@ -43,6 +43,8 @@ class Window(qtw.QMainWindow):
         self.add_functionality()
         self.add_widget()
         self.window.enter_button.clicked.connect(lambda: print("clicked"))
+        self.enterSc = qtg.QShortcut(qtg.QKeySequence('Return'), self.window.input_box)
+
 
     def add_widget(self) -> None:
         self.window.title_h_layout.insertWidget(0, self.size_grip)
@@ -73,6 +75,7 @@ def setup(fn: Callable[[qtw.QLineEdit, qtw.QLabel], Callable[[], None]]) -> None
 
     window = Window()
     window.window.enter_button.clicked.connect(fn(window.window.input_box, window.window.label))
+    window.enterSc.activated.connect(fn(window.window.input_box, window.window.label))
     window.show()
 
     sys.exit(app.exec_())

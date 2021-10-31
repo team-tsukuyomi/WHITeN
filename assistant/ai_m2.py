@@ -102,7 +102,6 @@ s_print(['Hello, Human!'])
 
 
 def reply(inp, stdscr=None, label=None):
-    print(label)
     inp = inp.replace('don\'t', 'do not').replace('can\'t', 'cannot').replace(
         '\'ld', ' would').replace('\'ll', 'will').replace('dont', 'do not').replace('cant', 'cannot')
     if 'calculate' in inp.lower():
