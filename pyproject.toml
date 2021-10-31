@@ -2,8 +2,6 @@
 name = "assistant"
 version = "0.1.0"
 description = ""
-authors = ["Prabhakar Dev <ayushashi11@gmail.com>"]
-license = "GPL"
 
 [tool.poetry.dependencies]
 python = ">=3.8, <3.10"
