@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <title>What's In The Name</title>
+    <link rel="stylesheet" href="tailwind.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+      function addmsg(text, toggle) {
+        let msgs = document.getElementById("messages");
+        msgs.innerHTML +=
+          '<div class="w-screen inline-block"><div class="' +
+          (toggle ? "bg-gray-400 ml-4" : "bg-green-600 float-right mr-4") +
+          ' w-3/4 mt-2 p-2 rounded-lg">' +
+          text +
+          "</div></div>";
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+      function clk() {
+        let val = document.getElementById("inp").value;
+        addmsg(val, false);
+        document.getElementById("inp").value = "";
+        document.getElementById("inp").focus();
+        $.get("/inp/"+val,(data)=>{
+          let msg = data.message;
+          if(data.image){
+            msg = "<img class=\"h-40 object-contain\" src=\""+data.image+"\"/>"+msg;
+          }
+          addmsg(msg, true);
+        });
+      }
+    </script>
+  </head>
+  <body class="bg-black w-screen overflow-hidden">
+    <div class="w-screen overflow-x-hidden">
+      <!-- HEADING -->
+      <div
+        class="
+          fixed
+          w-screen
+          bg-green-700
+          h-16
+          pt-2
+          text-white
+          flex
+          justify-left
+          top-0
+          shadow-md
+        "
+      >
+        <!-- back button -->
+        <a href="#" class="h-10 w-10 text-lg">
+          <svg class="h-10 w-10 text-green-800 left-0 float-left text-lg">
+            <path
+              class="h-10 w-10"
+              d="M9.41 11H17a1 1 0 0 1 0 2H9.41l2.3 2.3a1 1 0 1 1-1.42 1.4l-4-4a1 1 0 0 1 0-1.4l4-4a1 1 0 0 1 1.42 1.4L9.4 11z"
+            />
+          </svg>
+        </a>
+        <div class="my-3 text-green-100 font-bold text-lg text-center">
+          WhITeN
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div
+        class="
+          mt-20
+          mb-20
+          flex-column
+          w-screen
+          overflow-y-scroll overflow-x-hidden
+          h-3/4
+        "
+        id="messages"
+      ></div>
+    </div>
+
+    <!-- MESSAGE INPUT AREA -->
+    <div
+      class="fixed w-screen flex justify-center bg-gray-700"
+      style="bottom: 0px"
+    >
+      <textarea
+        class="
+          flex-grow
+          mt-2
+          mb-0
+          px-4
+          pt-2
+          mr-1
+          rounded-full
+          border border-gray-800
+          bg-gray-200
+          resize-none
+          text-lg
+        "
+        id="inp"
+        rows="1"
+        placeholder="Message..."
+        style="outline: none"
+      ></textarea>
+      <button class="m-2" style="" onclick="clk()">
+        <svg
+          class="
+            svg-inline--fa
+            text-green-400
+            fa-paper-plane fa-w-16
+            w-12
+            h-12
+            py-2
+            mr-2
+          "
+          aria-hidden="true"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="paper-plane"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+        >
+          <path
+            fill="currentColor"
+            d="M476 3.2L12.5 270.6c-18.1 10.4-15.8 35.6 2.2 43.2L121 358.4l287.3-253.2c5.5-4.9 13.3 2.6 8.6 8.3L176 407v80.5c0 23.6 28.5 32.9 42.5 15.8L282 426l124.6 52.2c14.2 6 30.4-2.9 33-18.2l72-432C515 7.8 493.3-6.8 476 3.2z"
+          />
+        </svg>
+      </button>
+    </div>
+  </body>
+</html>

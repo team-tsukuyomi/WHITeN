@@ -45,7 +45,6 @@ class Window(qtw.QMainWindow):
         self.window.enter_button.clicked.connect(lambda: print("clicked"))
         self.enterSc = qtg.QShortcut(qtg.QKeySequence('Return'), self.window.input_box)
 
-
     def add_widget(self) -> None:
         self.window.title_h_layout.insertWidget(0, self.size_grip)
         self.window.title_h_layout.insertWidget(1, self.dummy_title_frame)
