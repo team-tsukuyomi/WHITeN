@@ -1,1 +1,2 @@
-python server/server.py
+from server.server import main
+main()
